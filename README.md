@@ -31,7 +31,9 @@ import DemoDialog from "./demo-dialog";
 export default {
   methods: {
     open() {
-      this.$openDialog(DemoDialog)({ name: "123" });
+      this.$openDialog(DemoDialog)({ name: "123" })
+        .then(() => this.$message.success('任务成功'))
+        .catch(() => this.$message.warning('任务失败'));
     }
   }
 };
