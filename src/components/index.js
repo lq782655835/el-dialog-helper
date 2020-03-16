@@ -1,9 +1,17 @@
-import OpenDialog from "./helper";
+import OpenDialog from "./dialog";
 
 function install(Vue) {
   if (install.installed) return;
   install.installed = true;
   Vue.prototype.$openDialog = comp => OpenDialog(Vue, comp);
+
+  Vue.mixin({
+    methods: {
+      $closeDialog(isDone = false, ...args) {
+        this.$emit(isDone ? 'done' : 'cancel', ...args)
+      }
+    }
+  });
 }
 
 // auto plugin install
