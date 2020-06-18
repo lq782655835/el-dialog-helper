@@ -9,7 +9,7 @@ export default (Vue, component) => {
       instance.$destroy();
     };
     instance.$once("hook:destroyed", () => {
-      $el.parentNode.removeChild($el);
+      $el.parentNode && $el.parentNode.removeChild($el);
     });
 
     // 手动增加DOM
