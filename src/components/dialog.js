@@ -1,39 +1,39 @@
+/**
+ * 调用方式
+ * const instance = this.$openDialog(DialogComponent)({ xxx: 123 })
+ * instance.destory() // 手动关闭
+ */
 export default (Vue, component) => {
-  const componentConstructor = Vue.extend(component);
-  return (propsData = {}) => {
-    let instance = new componentConstructor({ propsData }).$mount();
-    let $el = instance.$el;
+  const div = document.createElement('div');
+    const el = document.createElement('div');
+    div.appendChild(el);
+    document.body.appendChild(div);
 
-    // 手动移除DOM
-    const destroyDialog = () => {
-      instance.$destroy();
-    };
-    instance.$once("hook:destroyed", () => {
-      $el.parentNode && $el.parentNode.removeChild($el);
-    });
-
-    // 手动增加DOM
-    document.body.appendChild($el);
-    // 设置visible prop，根据该字段可设置动画
-    if (instance["visible"] !== undefined) {
-      // 支持sync单独修改visible值
-      instance.$watch("visible", val => {
-        if (!val) {
-          destroyDialog();
+    let dialogInstance = null
+    // ref: https://github.com/vueComponent/ant-design-vue/blob/master/components/modal/confirm.js
+    return (propsData = {}, parent = undefined) => {
+      function destroy(...args) {
+        if (dialogInstance && div.parentNode) {
+          dialogInstance.$destroy();
+          dialogInstance = null;
+          div.parentNode.removeChild(div);
         }
-      });
-      Vue.nextTick(() => (instance["visible"] = true));
-    }
+      }
 
-    return new Promise((resolve, reject) => {
-      instance.$once("done", data => {
-        destroyDialog();
-        resolve(data);
-      });
-      instance.$once("cancel", data => {
-        destroyDialog();
-        reject(data);
-      });
-    });
-  };
+      // dialogInstance为包装后的Vue实例
+      // 使用包装后的dialogInstance实例，无法使用Promise API
+      dialogInstance = new Vue({
+        el,
+        parent,
+        data() { return propsData },
+        render(h) {
+          return h(comp, {
+            props: { ...this.propsData, visible: true }
+          })
+        }
+      })
+      dialogInstance.destory = destroy
+
+      return dialogInstance
+    };
 };
