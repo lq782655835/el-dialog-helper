@@ -1,16 +1,24 @@
 <template>
   <div id="app">
-    <el-button type="primary" @click="open" size="small">编程式打开dialog</el-button>
+    <el-button type="primary" @click="open" size="small">编程式打开ElementUI Dialog</el-button>
+
+    <el-button type="primary" @click="openAntdv" size="small">编程式打开Antdv Dialog</el-button>
   </div>
 </template>
 
 <script>
-import DemoDialog from "./demo-dialog";
+import ElementUIDialog from './elementui-dialog';
+import AntdDialog from './antd-dialog'
 export default {
-  name: "app",
+  name: 'app',
   methods: {
     open() {
-      this.$openDialog(DemoDialog)({ name: "123" })
+      this.$openDialog(ElementUIDialog)({ name: '123' })
+        .then(() => this.$message.success('任务成功'))
+        .catch(() => this.$message.warning('任务失败'));
+    },
+    openAntdv() {
+      this.$openDialog(AntdDialog)({ name: '123' })
         .then(() => this.$message.success('任务成功'))
         .catch(() => this.$message.warning('任务失败'));
     }
