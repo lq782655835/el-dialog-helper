@@ -1,26 +1,29 @@
 export default (Vue, component) => {
-  const componentConstructor = Vue.extend(component);
-  return (propsData = {}) => {
-    let instance = new componentConstructor({ propsData }).$mount();
-    let $el = instance.$el;
+  const div = document.createElement('div');
+  const el = document.createElement('div');
+  div.appendChild(el);
+  document.body.appendChild(div);
 
-    // 手动移除DOM
+  const ComponentConstructor = Vue.extend(component);
+  return (propsData = {}, parent = undefined) => {
+    let instance = new ComponentConstructor({
+      propsData,
+      parent,
+    }).$mount(el);
+
     const destroyDialog = () => {
-      instance.$destroy();
+      if (instance && div.parentNode) {
+        instance.$destroy();
+        instance = null
+        div.parentNode && div.parentNode.removeChild(div);
+      }
     };
-    instance.$once("hook:destroyed", () => {
-      $el.parentNode && $el.parentNode.removeChild($el);
-    });
 
-    // 手动增加DOM
-    document.body.appendChild($el);
-    // 设置visible prop，根据该字段可设置动画
+    // visible控制
     if (instance["visible"] !== undefined) {
-      // 支持sync单独修改visible值
+      // 支持sync/v-model
       instance.$watch("visible", val => {
-        if (!val) {
-          destroyDialog();
-        }
+        !val && destroyDialog()
       });
       Vue.nextTick(() => (instance["visible"] = true));
     }
