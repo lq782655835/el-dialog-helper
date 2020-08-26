@@ -1,5 +1,12 @@
 # el-dialog-helper ![](https://img.shields.io/badge/license-MIT-F44336.svg)
 
+## 背景
+
+在做业务代码的modal弹窗时，总是围绕visible变量以及控制visible变量逻辑，能否简化弹窗相关逻辑呢？
+
+文章：[Vue Dialog弹窗解决方案](https://lq782655835.github.io/blogs/project/vue-dialog-solution.html)
+
+
 ## Install
 
 ``` bash
@@ -90,6 +97,7 @@ export default {
 | [@springleo/el-dialog-helper](https://github.com/lq782655835/el-dialog-helper) | ![](https://img.shields.io/badge/license-MIT-F44336.svg) | Promisify dialogs in Vue! |
 | [@springleo/el-table-plus](https://github.com/lq782655835/el-table-plus) | ![](https://img.shields.io/badge/license-MIT-F44336.svg) | 基于el-table的配置化组件|
 | [@springleo/el-form-plus](https://github.com/lq782655835/el-form-plus) | ![](https://img.shields.io/badge/license-MIT-F44336.svg) | schema form base on element-ui form |
+| [@springleo/virtual-scroll-table](https://github.com/lq782655835/virtual-scroll-table) | ![](https://img.shields.io/badge/license-MIT-F44336.svg) | 无限下拉虚拟滚动table组件 |
 
 ## License
 
