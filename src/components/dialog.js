@@ -1,21 +1,17 @@
 export default (Vue, component) => {
-  const div = document.createElement('div');
-  const el = document.createElement('div');
-  div.appendChild(el);
-  document.body.appendChild(div);
-
   const ComponentConstructor = Vue.extend(component);
   return (propsData = {}, parent = undefined) => {
     let instance = new ComponentConstructor({
       propsData,
       parent,
-    }).$mount(el);
+    }).$mount();
+    document.body.appendChild(instance.$el);
 
     const destroyDialog = () => {
-      if (instance && div.parentNode) {
+      if (instance) {
         instance.$destroy();
-        instance = null
-        div.parentNode && div.parentNode.removeChild(div);
+        document.body.removeChild(instance.$el);
+        instance = null;
       }
     };
 
